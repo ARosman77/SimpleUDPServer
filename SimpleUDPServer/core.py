@@ -1,42 +1,33 @@
+#!/usr/bin/python
+
 """
 Simple UDP Server
 
 """
 
 # import part
-import os
-import stack
-import gpio
-import A20py
+import socket
+import sys
 
+# Global defines
+HOST = ''       # Symbolic name meaning all available interfaces
+PORT = 12345    # Arbitrary no-privileged port used for the server
 
-if x>10:
-    break
-elif x>5:
-    break
-else:
-    break
+try:
+    # create UDP socket
+    udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    udpSocket.bind((HOST,PORT))
+except socket.error, msg:
+    print "Failed to create and bind socket." +
+    / "Error code: " + str(msg[0]) +
+    / "Error message: " + msg[1]
+    sys.exit()
 
-# test folding
-if x>10:
-    test1
-    test2
-    test3
-else:
-    test4
-    test5
-    test6
+# Main Server Loop
+while 1:
+    udpPacket = udpSocket.recvfrom(1024)
+    recivedData = udpPacket[0]
+    recivedAddr = udpPacket[1]
 
-# test folding with SimpylFold
-def foldingTest(simpleParam):
-    """ Function to test SimpylFold """
-    Test1
-    Test2
-    test3
-    return a
-
-def foldingTest2():
-    """ Another function without paramters """
-    Test5
-    Test6
-    return b
+# Exit server
+udpSocket.close()
