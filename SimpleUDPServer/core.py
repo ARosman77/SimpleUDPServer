@@ -14,6 +14,7 @@ HOST = ''       # Symbolic name meaning all available interfaces
 PORT = 12345    # Arbitrary no-privileged port used for the server
 PROTOCOL_ACK = '#$000001$FF$FF$#'
 PROTOCOL_NAK = '#$$#'
+DEBUG = 1
 
 try:
     # create UDP socket
@@ -22,6 +23,8 @@ try:
     udpSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     # bind it to address
     udpSocket.bind((HOST,PORT))
+    if DEBUG:
+        print "Server conneted at port "+str(PORT)+".\n"
 except socket.error, msg:
     print "Failed to create and bind socket." +\
         "Error code: " + str(msg[0]) +\
@@ -44,10 +47,12 @@ while 1:
         try:
             # split data into parts
             splitData = receivedData[2:-2].split('$')
-            protocolVersion = split_data[0]
-            protocolCommand = split_data[1]
-            protocolParams = split_data[2:-2]
-            protocolChkSum = split_data[-1:]
+            protocolVersion = splitData[0]
+            protocolCommand = splitData[1]
+            protocolParams = splitData[2:-2]
+            protocolChkSum = splitData[-1:]
+            if DEBUG:
+                print "Valid packet received.\n"
 
             # test simple command, later to be rewritten
             if protocolCommand == '00':
